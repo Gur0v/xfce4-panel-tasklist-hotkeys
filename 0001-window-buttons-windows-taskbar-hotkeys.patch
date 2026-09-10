@@ -293,7 +293,7 @@ index e0f2bbf..95088c8 100644
 +      return TRUE;
 +    }
 +
-+  if (value == NULL || !G_VALUE_HOLDS_UINT (value))
++  if (value == NULL || !G_VALUE_HOLDS_UINT64 (value))
 +    {
 +      g_free (event);
 +      return TRUE;
@@ -314,7 +314,7 @@ index e0f2bbf..95088c8 100644
 +    }
 +
 +  xfce_tasklist_hotkey_activate (XFCE_TASKLIST (plugin->tasklist),
-+                                 g_value_get_uint (value), action);
++                                 g_value_get_uint64 (value), action);
 +  g_free (event);
 +
 +  return TRUE;

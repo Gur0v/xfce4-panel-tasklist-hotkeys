@@ -52,7 +52,7 @@ Build as regular user from repository root:
 
 Install produced package:
 
-    sudo pacman -U ./xfce4-panel-4.20.8-1.1-x86_64.pkg.tar.zst
+    sudo pacman -U ./xfce4-panel-4.20.8-1.2-x86_64.pkg.tar.zst
 
 Restart panel after installation:
 
