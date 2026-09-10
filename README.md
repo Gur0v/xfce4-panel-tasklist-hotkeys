@@ -91,10 +91,10 @@ For a future stable release:
 
 1. Change `pkgver` and tarball SHA-256 in `PKGBUILD`.
 2. Extract that exact official release tarball.
-3. Apply or rebase `patches/0001-window-buttons-windows-taskbar-hotkeys.patch` against it.
+3. Apply or rebase `0001-window-buttons-windows-taskbar-hotkeys.patch` against it.
 4. Regenerate patch SHA-256 and `.SRCINFO`, then run `makepkg -s` and tests.
 
-Keep package tied to an explicit Xfce release. Refresh `0001-window-buttons-windows-taskbar-hotkeys.patch` at repository root and do not switch source to Git HEAD.
+Keep package tied to an explicit Xfce release. Refresh `0001-window-buttons-windows-taskbar-hotkeys.patch` and do not switch source to Git HEAD.
 
 ## Validation scope
 

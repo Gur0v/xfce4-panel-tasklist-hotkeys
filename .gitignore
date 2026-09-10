@@ -2,12 +2,4 @@
 /pkg/
 /src/
 *.pkg.tar.*
-
-# Local research/build trees
-/xfce4-panel-*/
-/xfce4-panel-*.tar.*
-/build-*/
-/local-pkgs/
-/local-root/
-/.local-build-deps/
-/patches/
+*.tar.bz2
