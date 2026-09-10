@@ -52,21 +52,21 @@ Build as regular user from repository root:
 
 Install produced package:
 
-    sudo pacman -U ./xfce4-panel-4.20.8-1.3-x86_64.pkg.tar.zst
+    sudo pacman -U ./xfce4-panel-tasklist-hotkeys-4.20.8-1-x86_64.pkg.tar.zst
 
 Restart panel after installation:
 
     xfce4-panel -r
 
-`pkgname=xfce4-panel` replaces/upgrades stock package in place and continues satisfying dependencies on `xfce4-panel`. No systemd dependency is added.
+Package conflicts with stock `xfce4-panel` because both install the same files. Versioned `provides=("xfce4-panel=4.20.8")` keeps dependencies on `xfce4-panel` satisfied. Pacman prompts to remove stock package during installation. No systemd dependency is added.
 
 ## Revert to stock package
 
-Refresh package databases and replace patched build with repository package:
+Refresh package databases and replace patched package with repository package:
 
     sudo pacman -Syy xfce4-panel
 
-Then restart panel with `xfce4-panel -r`. Pacman may report a downgrade because patched `pkgrel=1.1` sorts after repository `pkgrel=1`; confirm it.
+Confirm removal of `xfce4-panel-tasklist-hotkeys` when Pacman asks, then restart panel with `xfce4-panel -r`.
 
 ## Known differences from Windows 10
 
