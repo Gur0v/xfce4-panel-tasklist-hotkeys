@@ -1,8 +1,8 @@
 diff --git a/plugins/tasklist/tasklist-widget.c b/plugins/tasklist/tasklist-widget.c
-index 9f94163..1659aa7 100644
+index 9f94163..23a00a9 100644
 --- a/plugins/tasklist/tasklist-widget.c
 +++ b/plugins/tasklist/tasklist-widget.c
-@@ -4984,3 +4984,196 @@ xfce_tasklist_update_monitor_geometry (XfceTasklist *tasklist)
+@@ -4984,3 +4984,198 @@ xfce_tasklist_update_monitor_geometry (XfceTasklist *tasklist)
                                     tasklist, xfce_tasklist_update_monitor_geometry_idle_destroy);
      }
  }
@@ -129,6 +129,8 @@ index 9f94163..1659aa7 100644
 +    xfce_tasklist_button_start_new_instance_clicked (window_child->button, window_child);
 +  else if (!xfw_window_is_active (window_child->window))
 +    xfce_tasklist_button_activate (window_child, gtk_get_current_event_time ());
++  else if (action == XFCE_TASKLIST_HOTKEY_ACTIVATE)
++    xfw_window_set_minimized (window_child->window, TRUE, NULL);
 +
 +  return TRUE;
 +}
@@ -235,7 +237,7 @@ index 0ed4f44..98cb677 100644
  
  #endif /* !__XFCE_TASKLIST_H__ */
 diff --git a/plugins/tasklist/tasklist.c b/plugins/tasklist/tasklist.c
-index e0f2bbf..95088c8 100644
+index e0f2bbf..18ee666 100644
 --- a/plugins/tasklist/tasklist.c
 +++ b/plugins/tasklist/tasklist.c
 @@ -61,6 +61,10 @@ tasklist_plugin_screen_position_changed (XfcePanelPlugin *panel_plugin,

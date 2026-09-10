@@ -8,8 +8,8 @@ Replace `INSTANCE` below with one Window Buttons plugin ID.
 
 | Windows shortcut | Xfce command | Behavior |
 |---|---|---|
-| `Super+1` … `Super+9` | `xfce4-panel --plugin-event=tasklist:activate-INSTANCE:uint:N` | Activate visible slot 1–9 |
-| `Super+0` | `xfce4-panel --plugin-event=tasklist:activate-INSTANCE:uint:10` | Activate visible slot 10 |
+| `Super+1` … `Super+9` | `xfce4-panel --plugin-event=tasklist:activate-INSTANCE:uint:N` | Activate visible slot 1–9; minimize it when already active |
+| `Super+0` | `xfce4-panel --plugin-event=tasklist:activate-INSTANCE:uint:10` | Activate visible slot 10; minimize it when already active |
 | `Super+Shift+N` | `xfce4-panel --plugin-event=tasklist:new-instance-INSTANCE:uint:N` | Start another instance when Window Buttons can resolve `/proc/PID/exe` |
 | `Super+Ctrl+N` | `xfce4-panel --plugin-event=tasklist:activate-last-INSTANCE:uint:N` | Activate group's most recently focused window |
 | `Super+Alt+N` | `xfce4-panel --plugin-event=tasklist:menu-INSTANCE:uint:N` | Open Xfce's native window/group action menu |
@@ -52,7 +52,7 @@ Build as regular user from repository root:
 
 Install produced package:
 
-    sudo pacman -U ./xfce4-panel-4.20.8-1.2-x86_64.pkg.tar.zst
+    sudo pacman -U ./xfce4-panel-4.20.8-1.3-x86_64.pkg.tar.zst
 
 Restart panel after installation:
 
