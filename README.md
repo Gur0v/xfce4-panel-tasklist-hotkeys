@@ -1,105 +1,68 @@
-# Xfce Window Buttons tasklist hotkeys
+# Xfce tasklist hotkeys
 
-Patch project for **xfce4-panel 4.20.8**. It adds Windows 10-like keyboard control to Window Buttons while using the plugin's own filtered, grouped, and ordered tasklist as source of truth.
+This project patches **xfce4-panel 4.20.8** to add Windows-like keyboard shortcuts to the Window Buttons tasklist.
 
-## Implemented behavior
+I packaged this patch for the Arch User Repository (AUR) as [`xfce4-panel-tasklist-hotkeys`](https://aur.archlinux.org/packages/xfce4-panel-tasklist-hotkeys).
 
-Replace `INSTANCE` below with one Window Buttons plugin ID.
+## Features
 
-| Windows shortcut | Xfce command | Behavior |
+Replace `INSTANCE` with your Window Buttons plugin ID and `N` with a tasklist position.
+
+| Shortcut | Command | Action |
 |---|---|---|
-| `Super+1` … `Super+9` | `xfce4-panel --plugin-event=tasklist:activate-INSTANCE:uint:N` | Activate visible slot 1–9; minimize it when already active |
-| `Super+0` | `xfce4-panel --plugin-event=tasklist:activate-INSTANCE:uint:10` | Activate visible slot 10; minimize it when already active |
-| `Super+Shift+N` | `xfce4-panel --plugin-event=tasklist:new-instance-INSTANCE:uint:N` | Start another instance when Window Buttons can resolve `/proc/PID/exe` |
-| `Super+Ctrl+N` | `xfce4-panel --plugin-event=tasklist:activate-last-INSTANCE:uint:N` | Activate group's most recently focused window |
-| `Super+Alt+N` | `xfce4-panel --plugin-event=tasklist:menu-INSTANCE:uint:N` | Open Xfce's native window/group action menu |
-| `Super+T` | `xfce4-panel --plugin-event=tasklist:cycle-INSTANCE` | Activate next visible tasklist entry |
-| `Super+Shift+T` | `xfce4-panel --plugin-event=tasklist:cycle-backwards-INSTANCE` | Activate previous visible tasklist entry |
+| `Super+1`–`Super+9` | `xfce4-panel --plugin-event=tasklist:activate-INSTANCE:uint:N` | Open or minimize item 1–9 |
+| `Super+0` | `xfce4-panel --plugin-event=tasklist:activate-INSTANCE:uint:10` | Open or minimize item 10 |
+| `Super+Shift+N` | `xfce4-panel --plugin-event=tasklist:new-instance-INSTANCE:uint:N` | Start another instance of the app |
+| `Super+Ctrl+N` | `xfce4-panel --plugin-event=tasklist:activate-last-INSTANCE:uint:N` | Open the last-used window in a group |
+| `Super+Alt+N` | `xfce4-panel --plugin-event=tasklist:menu-INSTANCE:uint:N` | Open the window or group menu |
+| `Super+T` | `xfce4-panel --plugin-event=tasklist:cycle-INSTANCE` | Select the next tasklist item |
+| `Super+Shift+T` | `xfce4-panel --plugin-event=tasklist:cycle-backwards-INSTANCE` | Select the previous tasklist item |
 
-Normal numbered activation chooses a window directly. For a group, first invocation selects its most recently focused visible window; invoking the same active group repeatedly advances through that group's ordered visible windows. A single visible group consumes one number.
+The numbers follow the visible order in Window Buttons. A window group takes one number, and pressing its shortcut repeatedly cycles through the windows in that group.
 
-Missing positions do nothing. Events are accepted only by the explicitly named instance, so multiple Window Buttons plugins do not all act.
+## Install from the AUR
 
-## Numbering and visible order
+Using an AUR helper such as `yay`:
 
-Numbering follows top-level children in `XfceTasklist::windows` after Window Buttons applies its normal sorting or drag-and-drop order and visibility rules. It counts visible `CHILD_TYPE_WINDOW` and `CHILD_TYPE_GROUP` buttons only. Group-menu children and overflow-only children do not consume hidden shortcut slots.
+    yay -S xfce4-panel-tasklist-hotkeys
 
-This preserves tasklist decisions for workspaces, monitors, minimized-only mode, urgency visibility, skipped windows, grouping, and configured sorting. Numbering means current Window Buttons entries—not Windows pinned applications. Xfce Window Buttons has no pinned-launcher model.
-
-## Identify plugin instance
-
-Run:
-
-    xfconf-query -c xfce4-panel -p /plugins -lv | grep 'tasklist$'
-
-Typical output contains `/plugins/plugin-12 ... tasklist`; use `12` as `INSTANCE`. Panel Preferences also shows item IDs in its Items tab on supported versions.
-
-## Configure shortcuts
-
-Open **Settings Manager → Keyboard → Application Shortcuts**. Add commands from the table. For each digit, replace `N` with 1–10 while keeping your fixed `INSTANCE`.
-
-Example for instance 12 and position 1:
-
-    xfce4-panel --plugin-event=tasklist:activate-12:uint:1
-
-Bind it to `Super+1`. Bind position 10 command to `Super+0`. Repeat with `new-instance`, `activate-last`, and `menu` only for modifiers wanted. No helper modifies xfconf automatically.
-
-## Build and install on Arch/Artix
-
-Build as regular user from repository root:
-
-    makepkg -s
-
-Install produced package:
-
-    sudo pacman -U ./xfce4-panel-tasklist-hotkeys-4.20.8-1-x86_64.pkg.tar.zst
-
-Restart panel after installation:
+Restart the panel after installation:
 
     xfce4-panel -r
 
-Package conflicts with stock `xfce4-panel` because both install the same files. Versioned `provides=("xfce4-panel=4.20.8")` keeps dependencies on `xfce4-panel` satisfied. Pacman prompts to remove stock package during installation. No systemd dependency is added.
+This package replaces and conflicts with the standard `xfce4-panel` package.
 
-## Revert to stock package
+## Build manually
 
-Refresh package databases and replace patched package with repository package:
+From the repository directory, run as a regular user:
 
-    sudo pacman -Syy xfce4-panel
+    makepkg -si
+    xfce4-panel -r
 
-Confirm removal of `xfce4-panel-tasklist-hotkeys` when Pacman asks, then restart panel with `xfce4-panel -r`.
+## Configure shortcuts
 
-## Known differences from Windows 10
+Find the Window Buttons plugin ID:
 
-- Positions represent currently visible Window Buttons entries, not pinned apps.
-- No app is launched for an absent slot because tasklist has no pinned launcher metadata.
-- `Super+Shift+N` reuses existing native Window Buttons logic. Launch succeeds only when `/proc/PID/exe` is available and executable invocation is sufficient; command-line arguments and desktop-file launch semantics are unavailable.
-- `Super+Alt+N` opens Xfce window/group actions, not a Windows Jump List. Xfce has no Jump List subsystem.
-- `Super+T` activates entries immediately. Windows gives taskbar keyboard focus and allows arrow/Enter interaction; Window Buttons has no equivalent focus mode.
-- Group cycling approximates Windows behavior using tasklist group order and tracked `last_focused` timestamps.
+    xfconf-query -c xfce4-panel -p /plugins -lv | grep 'tasklist$'
 
-## Troubleshooting
+If the output contains `/plugins/plugin-12 ... tasklist`, use `12` as `INSTANCE`.
 
-- Command does nothing: verify plugin ID and visible slot count. Use decimal unsigned values such as `uint:10`.
-- Several Window Buttons instances exist: each binding must use intended instance ID in event name.
-- New instance does nothing: selected process likely has no usable `/proc/PID/exe`; this is intentional rather than guessing a launcher.
-- Order seems unexpected: inspect Window Buttons sorting, grouping, workspace, monitor, and minimized-only settings. Keyboard numbering mirrors those decisions.
-- After package upgrade, restart panel using `xfce4-panel -r`.
+Open **Settings Manager → Keyboard → Application Shortcuts** and add the commands from the table. For example, bind this command to `Super+1` when the plugin ID is 12:
 
-## Updating and rebasing
+    xfce4-panel --plugin-event=tasklist:activate-12:uint:1
 
-For a future stable release:
+## Return to the standard panel
 
-1. Change `pkgver` and tarball SHA-256 in `PKGBUILD`.
-2. Extract that exact official release tarball.
-3. Apply or rebase `0001-window-buttons-windows-taskbar-hotkeys.patch` against it.
-4. Regenerate patch SHA-256 and `.SRCINFO`, then run `makepkg -s` and tests.
+    sudo pacman -S xfce4-panel
+    xfce4-panel -r
 
-Keep package tied to an explicit Xfce release. Refresh `0001-window-buttons-windows-taskbar-hotkeys.patch` and do not switch source to Git HEAD.
+## Notes
 
-## Validation scope
+- Empty tasklist positions do nothing.
+- Starting another app instance requires Xfce to find its executable through `/proc/PID/exe`.
+- If shortcuts stop working after changing the panel layout, check whether the plugin ID changed.
+- The patch targets Xfce 4.20.8 and may need changes for other versions.
 
-The patched 4.20.8 source was configured and compiled with upstream Autotools build files. Build completed with zero compiler warnings/errors caused by patch. Live panel replacement and interactive shortcut/window tests were not performed because validation permission was build/package only.
+## License
 
-## Licensing
-
-Repository metadata and documentation use the root BSD-3-Clause `LICENSE`. Patch modifies GPL/LGPL-covered xfce4-panel source; resulting modified source and binaries remain under applicable upstream licenses. See upstream `COPYING` and `COPYING.LIB` files in release archive.
+The packaging files use the BSD 3-Clause License. The patched Xfce source remains under its upstream licenses.
