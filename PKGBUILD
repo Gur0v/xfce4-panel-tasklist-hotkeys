@@ -1,5 +1,4 @@
 # Maintainer: Gurov <thuggethugger1@duck.com>
-
 pkgname=xfce4-panel-tasklist-hotkeys
 _upstream=xfce4-panel
 pkgver=4.20.8
