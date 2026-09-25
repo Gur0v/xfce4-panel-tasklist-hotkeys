@@ -2,8 +2,6 @@
 
 This project patches **xfce4-panel 4.20.8** to add Windows-like keyboard shortcuts to the Window Buttons tasklist.
 
-I packaged this patch for the Arch User Repository (AUR) as [`xfce4-panel-tasklist-hotkeys`](https://aur.archlinux.org/packages/xfce4-panel-tasklist-hotkeys).
-
 ## Features
 
 Replace `INSTANCE` with your Window Buttons plugin ID and `N` with a tasklist position.
